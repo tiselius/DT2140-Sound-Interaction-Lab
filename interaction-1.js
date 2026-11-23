@@ -51,8 +51,27 @@ tuono.createDSP(audioContext, 1024)
 //
 //==========================================================================================
 
+const zeroMargin = 0.5;
+const minFallTime = 200;
+const minTimeBetween = 1000;
+let freeFallStart = null;
+let prevFall = null;
+
 function accelerationChange(accx, accy, accz) {
-    // playAudio()
+    const tot_magnitude = Math.hypot(accx, accy, accz);
+    const time_now = millis();
+    if (tot_magnitude < zeroMargin) {
+        if (freeFallStart === null)
+            freeFallStart = time_now;
+        if (time_now - freeFallStart >= minFallTime && now - prevFall > minTimeBetween) {
+            prevFall = time_now;
+            freeFallStart = null;
+            playAudio();
+        }
+    }
+    else {
+        freeFallStart = null;
+    }
 }
 
 function rotationChange(rotx, roty, rotz) {
@@ -64,17 +83,17 @@ function mousePressed() {
 }
 
 function deviceMoved() {
-    movetimer = millis();
-    statusLabels[2].style("color", "pink");
+    // movetimer = millis();
+    // statusLabels[2].style("color", "pink");
 }
 
 function deviceTurned() {
-    threshVals[1] = turnAxis;
+    // threshVals[1] = turnAxis;
 }
 function deviceShaken() {
-    shaketimer = millis();
-    statusLabels[0].style("color", "pink");
-    playAudio();
+    // shaketimer = millis();
+    // statusLabels[0].style("color", "pink");
+    // playAudio();
 }
 
 function getMinMaxParam(address) {
