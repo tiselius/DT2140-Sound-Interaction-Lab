@@ -14,7 +14,7 @@ let threshVals = [0, " ", 0];
 let labels = ["", "Acceleration X", "Acceleration Y", "Acceleration Z", "", "Rotation X", "Rotation Y", "Rotation Z"];
 let labelIDs = ["", "accx", "accy", "accz", "", "rotX", "rotY", "rotZ"];
 let vals = [];
-let stateLabels = ["shaken", "turned", "moved"];
+let stateLabels = ["dropped", "turned", "moved"];
 let buttons = [];
 let buttonWidth;
 let buttonLabels = ["Turn On DSP", "Request Permission"];
@@ -24,7 +24,7 @@ let p = [];
 let statusLabels = [];
 
 let movetimer = 0;
-let shaketimer = 0;
+let droppedtimer = 0;
 let turntimer = 0;
 
 //==========================================================================================
@@ -72,7 +72,7 @@ function setup() {
 
   statusLabels[0] = createP(stateLabels[0] );
   statusLabels[0].parent(statBox.elt);
-  statusLabels[0].id("shaken");
+  statusLabels[0].id("dropped");
 
   statusLabels[1] = createP(stateLabels[1] );
   statusLabels[1].parent(statBox.elt);
@@ -87,10 +87,10 @@ function setup() {
   dSlider1.id("slider1");
   dSlider1.parent(statBox.elt);
 
-  sliders[1] = createP("shake threshold");
+  sliders[1] = createP("dropped threshold");
   sliders[1].parent(dSlider1.elt);
   //sliderWidth = width / 4;
-  sliders[0] = createSlider(0, 100, 30, 1); //shaker thresh, 0 - 100, default = 30, step = 1
+  sliders[0] = createSlider(0, 0.5, 0.3, 0.05); //shaker thresh, 0 - 100, default = 30, step = 1
 
   sliders[0].size(sliderWidth);
   sliders[0].parent(dSlider1.elt);

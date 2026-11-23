@@ -51,13 +51,13 @@ tuono.createDSP(audioContext, 1024)
 //
 //==========================================================================================
 
-const zeroMargin = 0.5;
 const minFallTime = 200;
 const minTimeBetween = 1000;
 let freeFallStart = null;
 let prevFall = null;
 
 function accelerationChange(accx, accy, accz) {
+    const zeroMargin = threshVals[0];
     const tot_magnitude = Math.hypot(accx, accy, accz);
     const time_now = millis();
     if (tot_magnitude < zeroMargin) {
@@ -66,6 +66,7 @@ function accelerationChange(accx, accy, accz) {
         if (time_now - freeFallStart >= minFallTime && now - prevFall > minTimeBetween) {
             prevFall = time_now;
             freeFallStart = null;
+            statusLabels[0].style("color", "pink");
             playAudio();
         }
     }
