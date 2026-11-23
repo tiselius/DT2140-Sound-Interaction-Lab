@@ -63,7 +63,7 @@ function accelerationChange(accx, accy, accz) {
     if (tot_magnitude < zeroMargin) {
         if (freeFallStart === null)
             freeFallStart = time_now;
-        if (time_now - freeFallStart >= minFallTime && now - prevFall > minTimeBetween) {
+        if (time_now - freeFallStart >= minFallTime && time_now - prevFall > minTimeBetween) {
             prevFall = time_now;
             freeFallStart = null;
             statusLabels[0].style("color", "pink");
