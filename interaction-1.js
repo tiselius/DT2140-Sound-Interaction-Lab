@@ -54,7 +54,7 @@ tuono.createDSP(audioContext, 1024)
 const minFallTime = 200;
 const minTimeBetween = 1000;
 let freeFallStart = null;
-let prevFall = null;
+let prevFall = 0;
 
 function accelerationChange(accx, accy, accz) {
     const zeroMargin = threshVals[0];
