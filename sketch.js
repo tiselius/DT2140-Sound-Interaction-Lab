@@ -144,7 +144,7 @@ function draw() {
   setShakeThreshold(threshVals[0]);
   setMoveThreshold(threshVals[2]);
 
-  if (millis() - shaketimer > 1000) { 
+  if (millis() - droppedtimer > 1000) { 
     statusLabels[0].style("color", "black");
   }
   if (millis() - turntimer > 1000) { 
