@@ -51,15 +51,20 @@ bells.createDSP(audioContext, 1024)
 //
 //==========================================================================================
 
+let maxShakeForce = 0;
+
 function accelerationChange(accx, accy, accz) {
-    // playAudio()
+    const totalForce = Math.sqrt(accx * accx + accy * accy + accz * accz);
+    // if (totalForce > maxShakeForce) {
+        maxShakeForce = totalForce;
+    // }
 }
 
 function rotationChange(rotx, roty, rotz) {
 }
 
 function mousePressed() {
-    // playAudio()
+    playAudio(15);
     // Use this for debugging from the desktop!
 }
 
@@ -71,19 +76,15 @@ function deviceMoved() {
 function deviceTurned() {
     threshVals[1] = turnAxis;
 }
+
 function deviceShaken() {
-    // shaketimer = millis();
+    shaketimer = millis();
     statusLabels[0].style("color", "pink");
-    playAudio();
+    playAudio(maxShakeForce);
+    maxShakeForce = 0;
 }
 
-function getMinMaxParam(address) {
-    const exampleMinMaxParam = findByAddress(dspNodeParams, address);
-    // ALWAYS PAY ATTENTION TO MIN AND MAX, ELSE YOU MAY GET REALLY HIGH VOLUMES FROM YOUR SPEAKERS
-    const [exampleMinValue, exampleMaxValue] = getParamMinMax(exampleMinMaxParam);
-    console.log('Min value:', exampleMinValue, 'Max value:', exampleMaxValue);
-    return [exampleMinValue, exampleMaxValue]
-}
+
 
 //==========================================================================================
 // AUDIO INTERACTION
@@ -95,17 +96,28 @@ function getMinMaxParam(address) {
 //
 //==========================================================================================
 
-function playAudio() {
+function playAudio(shakeForce = 15) {
     if (!dspNode) {
         return;
-    }
+  }
     if (audioContext.state === 'suspended') {
         return;
     }
-    dspNode.setParamValue("/englishBell/gate", 1)
+
+    // Map shake force (roughly 5 for light shake up to 35 for hard shake) to volume (0.1 to 1.0)
+    // p5.js constrain() and map() keep the volume safely within [0.1, 1.0]
+    const volume = constrain(map(shakeForce, 1, 10, 0.1, 1.0), 0.1, 1.0);
+
+    // Check your browser console's 'params:' log to verify whether bells.wasm uses
+    // "/englishBell/gain", "/englishBell/volume", or "/englishBell/strikeSharpness"
+    dspNode.setParamValue("/englishBell/gain", volume);
+
+    // Trigger the bell
+    dspNode.setParamValue("/englishBell/gate", 1);
     setTimeout(() => { dspNode.setParamValue("/englishBell/gate", 0) }, 100);
 }
 
 //==========================================================================================
 // END
 //==========================================================================================
+

@@ -11,8 +11,8 @@ let sliderWidth;
 let threshVals = [0, " ", 0];
 
 //init label stuff
-let labels = ["", "Acceleration X", "Acceleration Y", "Acceleration Z", "", "Rotation X", "Rotation Y", "Rotation Z"];
-let labelIDs = ["", "accx", "accy", "accz", "", "rotX", "rotY", "rotZ"];
+let labels = ["", "Acceleration X", "Acceleration Y", "Acceleration Z", "", "Rotation X", "Rotation Y", "Rotation Z", "shakeForce"];
+let labelIDs = ["", "accx", "accy", "accz", "", "rotX", "rotY", "rotZ", "maxShakeForce"];
 let vals = [];
 let stateLabels = ["dropped", "turned", "moved"];
 let buttons = [];
@@ -128,6 +128,7 @@ function draw() {
   vals[5] = round(rotationX, 1);
   vals[6] = round(rotationY, 1);
   vals[7] = round(rotationZ, 1);
+  vals[8] = round(totalShakeForce, 100);
 
   accelerationChange(accelerationX, accelerationY, accelerationZ);
   rotationChange(rotationX, rotationY, rotationZ);
